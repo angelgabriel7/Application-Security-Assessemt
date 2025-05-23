@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Application Security Testing & Technology Risk Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Chosen Color Palette: Energetic & Playful
+        - #FF6B6B (Coral Red)
+        - #FFD166 (Sunglow Yellow)
+        - #06D6A0 (Caribbean Green)
+        - #118AB2 (Blue NCS)
+        - #073B4C (Midnight Green Eagle Green - Dark Text/Accent)
+        - Background: #F8F9FA (Light Gray)
+        - Card Background: #FFFFFF (White)
+
+        Narrative Plan:
+        1.  Hero Section: Title, brief intro, key takeaway stat.
+        2.  The Imperative of Proactive Security: Why AppSec matters, "Shift Left" concept. Illustrative chart on cost of fixing bugs.
+        3.  Understanding AST Methodologies:
+            - Overview of SAST, DAST, IAST.
+            - Comparative Table: SAST vs. DAST vs. IAST.
+            - Deep Dive Cards: SAST (Strengths, Limitations), DAST (Strengths, Limitations), IAST (Strengths, Limitations). Illustrative chart on false positive rates.
+        4.  Strategic AST Integration in SDLC: Visual flow of SDLC with AST tool mapping.
+        5.  Comprehensive Technology Risk Assessment:
+            - Core Activities.
+            - Threat Modeling (STRIDE, PASTA, VAST) - Comparative Table.
+            - Risk Assessment Frameworks (NIST RMF, OCTAVE, FAIR) - Comparative Table.
+        6.  Vulnerability Management & Prioritization:
+            - CVSS Overview. Illustrative chart of vulnerability distribution.
+            - Effective Prioritization Strategies.
+        7.  Navigating Modern Security Challenges:
+            - Cloud-Native, Serverless, Microservices/Kubernetes, IoT (key risks/vulnerabilities for each in cards).
+            - Software Supply Chain Risks (SBOM, SLSA levels).
+        8.  Fostering a Secure Culture: DevSecOps Principles.
+        9.  The Future: AI/ML in AST.
+        10. Conclusion & Key Recommendations.
+
+        Visualization Choices & Justifications (Confirming NO SVG, NO MERMAID JS):
+        - Hero Stat: Single Big Number (HTML/Tailwind) - Goal: Inform.
+        - Cost of Fixing Bugs by SDLC Phase: Bar Chart (Chart.js Canvas) - Goal: Change/Compare. Illustrative.
+        - SAST vs. DAST vs. IAST Comparison: Table (HTML/Tailwind) - Goal: Organize/Compare.
+        - False Positive Rates (SAST vs DAST vs IAST): Grouped Bar Chart (Chart.js Canvas) - Goal: Compare. Illustrative.
+        - SDLC AST Integration: Process Flow (Structured HTML/CSS with Tailwind) - Goal: Organize.
+        - Threat Modeling Methodologies Comparison: Table (HTML/Tailwind) - Goal: Organize/Compare.
+        - Risk Assessment Frameworks Comparison: Table (HTML/Tailwind) - Goal: Organize/Compare.
+        - Vulnerability Distribution by CVSS: Bar Chart (Chart.js Canvas) - Goal: Compare/Inform. Illustrative.
+        - SLSA Levels: Ordered List (HTML/Tailwind) - Goal: Organize.
+        - General Information (Strengths, Limitations, Principles, Risks): Lists/Text Blocks within Cards (HTML/Tailwind) - Goal: Inform/Organize.
+        - Icons: Unicode characters (e.g., 🛡️, ⚙️, 📈, ☁️, ⛓️) - Goal: Inform (visual cue).
+
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All diagrams are HTML/CSS or Canvas-based via Chart.js.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #073B4C;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Default max-width, can be overridden by Tailwind */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 400px; /* Default max-height */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .sticky-nav {
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+            backdrop-filter: blur(10px);
+        }
+        .nav-link.active {
+            color: #FF6B6B;
+            font-weight: 600;
+            border-bottom: 2px solid #FF6B6B;
+        }
+        .sdlc-stage {
+            border: 2px solid #118AB2; /* Blue NCS */
+            background-color: #FFFFFF;
+        }
+        .sdlc-arrow {
+            color: #118AB2; /* Blue NCS */
+        }
+        .section-title-underline {
+            display: inline-block;
+            position: relative;
+        }
+        .section-title-underline::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            bottom: -5px;
+            left: 20%;
+            background-color: #FF6B6B; /* Coral Red */
+        }
+        .stat-card {
+            background-color: #06D6A0; /* Caribbean Green */
+            color: #073B4C; /* Midnight Green for text */
+        }
+        .stat-number {
+            font-size: 3rem; /* Adjusted for better fit */
+            line-height: 1;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        h1, h2, h3 { color: #073B4C; } /* Midnight Green for headers */
+        .text-coral-red { color: #FF6B6B; }
+        .bg-coral-red { background-color: #FF6B6B; }
+        .text-sunglow-yellow { color: #FFD166; }
+        .bg-sunglow-yellow { background-color: #FFD166; }
+        .text-caribbean-green { color: #06D6A0; }
+        .bg-caribbean-green { background-color: #06D6A0; }
+        .text-blue-ncs { color: #118AB2; }
+        .bg-blue-ncs { background-color: #118AB2; }
+        .text-midnight-green { color: #073B4C; }
+        .bg-midnight-green { background-color: #073B4C; }
+
+        .table-header {
+            background-color: #073B4C; /* Midnight Green */
+            color: #FFFFFF; /* White text */
+        }
+        .table-cell {
+            border: 1px solid #E2E8F0; /* Light gray border */
+        }
+        .table-row-odd {
+            background-color: #FFFFFF;
+        }
+        .table-row-even {
+            background-color: #F8F9FA; /* Slightly off-white for alternating rows */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="sticky-nav shadow-md py-3 px-4 md:px-8">
+        <div class="container mx-auto flex flex-wrap items-center justify-between">
+            <div class="text-2xl font-bold text-coral-red">AppSec Insights</div>
+            <button id="nav-toggle" class="md:hidden text-midnight-green focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+            <div id="nav-content" class="w-full md:flex md:items-center md:w-auto hidden md:block mt-4 md:mt-0">
+                <ul class="flex flex-col md:flex-row md:space-x-6 space-y-2 md:space-y-0 text-midnight-green">
+                    <li><a href="#proactive-security" class="nav-link hover:text-coral-red pb-1">Proactive Security</a></li>
+                    <li><a href="#ast-methodologies" class="nav-link hover:text-coral-red pb-1">AST Methods</a></li>
+                    <li><a href="#sdlc-integration" class="nav-link hover:text-coral-red pb-1">SDLC</a></li>
+                    <li><a href="#risk-assessment" class="nav-link hover:text-coral-red pb-1">Risk Assessment</a></li>
+                    <li><a href="#modern-challenges" class="nav-link hover:text-coral-red pb-1">Challenges</a></li>
+                    <li><a href="#secure-culture" class="nav-link hover:text-coral-red pb-1">Culture</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-midnight-green text-white py-16 md:py-24 px-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">Application Security Testing & Risk Assessment</h1>
+            <p class="text-lg md:text-xl mb-6 max-w-3xl mx-auto text-gray-300">An In-Depth Look at Safeguarding Digital Assets in a Complex Threat Landscape. This infographic synthesizes key findings on SAST, DAST, IAST, and comprehensive risk management.</p>
+            <div class="stat-card rounded-lg p-6 inline-block card-shadow max-w-sm mx-auto">
+                <p class="stat-number font-bold text-midnight-green">70%</p>
+                <p class="text-xl text-midnight-green">of breaches exploit known vulnerabilities with available patches (Illustrative Stat)</p>
+            </div>
+             <p class="text-sm mt-4 text-gray-400">The above statistic is illustrative, emphasizing the importance of proactive vulnerability management discussed in the report.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="proactive-security" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">The Imperative of Proactive Security</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">The escalating complexity of software and the evolving threat landscape demand a shift from reactive to proactive security. Integrating security early and throughout the Software Development Lifecycle (SDLC) — the "shift-left" paradigm — is crucial for reducing costs, improving code quality, and ensuring secure software delivery.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-ncs">🛡️ Why Proactive Security?</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Mitigates catastrophic financial and reputational damage from breaches.</li>
+                        <li>Significantly reduces the cost and effort of fixing vulnerabilities.</li>
+                        <li>Improves overall software quality and accelerates delivery timelines.</li>
+                        <li>Transforms security into an ongoing, collaborative responsibility (DevSecOps).</li>
+                        <li>Avoids expenses and delays associated with late-stage security fixes.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-2xl font-semibold mb-4 text-center text-blue-ncs">Cost of Fixing Vulnerabilities by SDLC Phase</h3>
+                    <div class="chart-container h-64 md:h-80 max-w-lg">
+                        <canvas id="costOfBugsChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center mt-2 text-gray-600">This chart illustrates the widely recognized industry trend: the later a vulnerability is found in the SDLC, the more expensive it is to remediate. Early detection through proactive security measures is economically advantageous. (Illustrative Data)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ast-methodologies" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">Understanding AST Methodologies</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">Application Security Testing (AST) uses various methods to find vulnerabilities. The main types are Static (SAST), Dynamic (DAST), and Interactive (IAST) Application Security Testing, each with unique strengths.</p>
+
+            <div class="bg-white p-6 rounded-lg card-shadow mb-8">
+                <h3 class="text-2xl font-semibold mb-4 text-blue-ncs">AST Methodologies at a Glance</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="border border-gray-200 p-4 rounded-lg">
+                        <h4 class="text-xl font-semibold text-coral-red mb-2">SAST (Static)</h4>
+                        <p class="text-gray-700">Analyzes source code, bytecode, or binary code at rest, without executing the application. A "white-box" method.</p>
+                    </div>
+                    <div class="border border-gray-200 p-4 rounded-lg">
+                        <h4 class="text-xl font-semibold text-sunglow-yellow mb-2">DAST (Dynamic)</h4>
+                        <p class="text-gray-700">Tests the application in its running state by simulating external attacks. A "black-box" method.</p>
+                    </div>
+                    <div class="border border-gray-200 p-4 rounded-lg">
+                        <h4 class="text-xl font-semibold text-caribbean-green mb-2">IAST (Interactive)</h4>
+                        <p class="text-gray-700">Combines SAST and DAST elements, using agents to monitor runtime behavior from within the application. A "grey-box" method.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg card-shadow mb-8">
+                <h3 class="text-2xl font-semibold mb-4 text-center text-blue-ncs">Comparative Overview: SAST vs. DAST vs. IAST</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">Feature</th>
+                                <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">SAST</th>
+                                <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">DAST</th>
+                                <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">IAST</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-row-odd">
+                                <td class="table-cell p-3 text-sm text-gray-700 font-semibold">Approach</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">White-box (code analysis)</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Black-box (runtime attacks)</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Grey-box (runtime instrumentation)</td>
+                            </tr>
+                            <tr class="table-row-even">
+                                <td class="table-cell p-3 text-sm text-gray-700 font-semibold">Code Visibility</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Full</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">None</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Runtime execution context</td>
+                            </tr>
+                            <tr class="table-row-odd">
+                                <td class="table-cell p-3 text-sm text-gray-700 font-semibold">SDLC Phase</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Early (Coding, Build)</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Late (QA, Staging, Prod)</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Mid (QA/Testing)</td>
+                            </tr>
+                            <tr class="table-row-even">
+                                <td class="table-cell p-3 text-sm text-gray-700 font-semibold">Execution Required</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">No</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Yes</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Yes (during functional tests)</td>
+                            </tr>
+                             <tr class="table-row-odd">
+                                <td class="table-cell p-3 text-sm text-gray-700 font-semibold">Typical False Positives</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Higher</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Lower</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Low</td>
+                            </tr>
+                            <tr class="table-row-even">
+                                <td class="table-cell p-3 text-sm text-gray-700 font-semibold">Remediation Guidance</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Pinpoints line of code</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Describes exploit, no code line</td>
+                                <td class="table-cell p-3 text-sm text-gray-700">Often line of code & path</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-sm text-center mt-4 text-gray-600">This table summarizes key differentiators based on the report. A robust AppSec program leverages their combined strengths.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h4 class="text-xl font-semibold text-coral-red mb-3">🔬 SAST Deep Dive</h4>
+                    <p class="text-sm text-gray-600 mb-3">Analyzes code before execution, ideal for early vulnerability detection.</p>
+                    <strong class="text-midnight-green">Strengths:</strong>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 my-2">
+                        <li>Early detection in SDLC (IDE, CI/CD)</li>
+                        <li>Comprehensive code coverage</li>
+                        <li>Finds specific flaws (SQLi patterns, buffer overflows)</li>
+                        <li>Scalable for large codebases</li>
+                        <li>Enforces secure coding practices</li>
+                    </ul>
+                    <strong class="text-midnight-green">Limitations:</strong>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 my-2">
+                        <li>Higher false positive rates</li>
+                        <li>Struggles with runtime/config issues</li>
+                        <li>Requires code access</li>
+                        <li>Potential for alert fatigue</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h4 class="text-xl font-semibold text-sunglow-yellow mb-3">📡 DAST Deep Dive</h4>
+                    <p class="text-sm text-gray-600 mb-3">Tests running applications, simulating real-world attacks.</p>
+                    <strong class="text-midnight-green">Strengths:</strong>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 my-2">
+                        <li>Technology/language independent</li>
+                        <li>Lower false positive rates</li>
+                        <li>Finds runtime & configuration issues</li>
+                        <li>Realistic attack simulation</li>
+                        <li>Supports compliance (OWASP Top 10)</li>
+                    </ul>
+                    <strong class="text-midnight-green">Limitations:</strong>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 my-2">
+                        <li>No code visibility (harder remediation)</li>
+                        <li>Later in SDLC (costlier fixes)</li>
+                        <li>Scans can be slow</li>
+                        <li>Needs running application</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h4 class="text-xl font-semibold text-caribbean-green mb-3">⚙️ IAST Deep Dive</h4>
+                    <p class="text-sm text-gray-600 mb-3">Instruments running apps for real-time analysis during tests.</p>
+                    <strong class="text-midnight-green">Strengths:</strong>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 my-2">
+                        <li>Real-time detection, high accuracy</li>
+                        <li>Reduced false positives</li>
+                        <li>Covers static & dynamic weaknesses</li>
+                        <li>Good for CI/CD and modern architectures</li>
+                        <li>Developer-friendly feedback (line of code)</li>
+                    </ul>
+                    <strong class="text-midnight-green">Limitations:</strong>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 my-2">
+                        <li>Coverage depends on functional test thoroughness</li>
+                        <li>Potential performance overhead</li>
+                        <li>Language/framework support can vary</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="bg-white p-6 rounded-lg card-shadow">
+                <h3 class="text-2xl font-semibold mb-4 text-center text-blue-ncs">Illustrative False Positive Rates</h3>
+                <div class="chart-container h-64 md:h-80 max-w-lg">
+                    <canvas id="falsePositiveChart"></canvas>
+                </div>
+                <p class="text-sm text-center mt-2 text-gray-600">This chart illustrates typical relative false positive rates discussed in the report, highlighting IAST's advantage in accuracy. (Illustrative Data)</p>
+            </div>
+        </section>
+
+        <section id="sdlc-integration" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">Strategic AST Integration in SDLC</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">Maximizing AST benefits requires strategic deployment across the Software Development Lifecycle. The "shift-left" approach catches vulnerabilities early, reducing remediation costs and complexity.</p>
+            
+            <div class="bg-white p-6 md:p-8 rounded-lg card-shadow">
+                <h3 class="text-2xl font-semibold mb-6 text-center text-blue-ncs">Mapping AST to SDLC Phases</h3>
+                <div class="flex flex-col md:flex-row items-center justify-around space-y-6 md:space-y-0 md:space-x-4">
+                    <div class="sdlc-stage p-4 rounded-lg text-center w-full md:w-1/5">
+                        <h4 class="font-semibold text-lg mb-1">1. Design & Coding</h4>
+                        <p class="text-sm text-gray-600">SAST (IDE Plugins, Pre-commit hooks)</p>
+                    </div>
+                    <div class="sdlc-arrow text-3xl hidden md:block">&rarr;</div>
+                    <div class="sdlc-arrow text-3xl md:hidden">&darr;</div>
+                    <div class="sdlc-stage p-4 rounded-lg text-center w-full md:w-1/5">
+                        <h4 class="font-semibold text-lg mb-1">2. Build & CI</h4>
+                        <p class="text-sm text-gray-600">Automated SAST</p>
+                    </div>
+                    <div class="sdlc-arrow text-3xl hidden md:block">&rarr;</div>
+                     <div class="sdlc-arrow text-3xl md:hidden">&darr;</div>
+                    <div class="sdlc-stage p-4 rounded-lg text-center w-full md:w-1/5">
+                        <h4 class="font-semibold text-lg mb-1">3. Testing & QA</h4>
+                        <p class="text-sm text-gray-600">IAST (with functional tests), DAST</p>
+                    </div>
+                    <div class="sdlc-arrow text-3xl hidden md:block">&rarr;</div>
+                     <div class="sdlc-arrow text-3xl md:hidden">&darr;</div>
+                    <div class="sdlc-stage p-4 rounded-lg text-center w-full md:w-1/5">
+                        <h4 class="font-semibold text-lg mb-1">4. Staging & CD</h4>
+                        <p class="text-sm text-gray-600">Comprehensive DAST</p>
+                    </div>
+                     <div class="sdlc-arrow text-3xl hidden md:block">&rarr;</div>
+                     <div class="sdlc-arrow text-3xl md:hidden">&darr;</div>
+                    <div class="sdlc-stage p-4 rounded-lg text-center w-full md:w-1/5">
+                        <h4 class="font-semibold text-lg mb-1">5. Production</h4>
+                        <p class="text-sm text-gray-600">DAST (periodic checks), Monitoring</p>
+                    </div>
+                </div>
+                <p class="text-sm text-center mt-6 text-gray-600">This flow illustrates how different AST tools are best applied at various SDLC stages for a defense-in-depth strategy, as outlined in the report.</p>
+            </div>
+        </section>
+
+        <section id="risk-assessment" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">Comprehensive Risk Assessment</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">Beyond vulnerability scanning, a systematic risk assessment identifies, analyzes, and evaluates risks to inform decision-making and implement appropriate security measures.</p>
+
+            <div class="bg-white p-6 rounded-lg card-shadow mb-8">
+                <h3 class="text-2xl font-semibold mb-3 text-blue-ncs">Core Risk Assessment Activities ⚙️</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li><strong>Asset Identification & Classification:</strong> Inventorying and valuing assets (data, systems, IP).</li>
+                    <li><strong>Threat Identification:</strong> Pinpointing potential harmful events or actors.</li>
+                    <li><strong>Vulnerability Assessment:</strong> Finding weaknesses in systems, processes, or controls.</li>
+                    <li><strong>Impact Analysis:</strong> Determining consequences of a successful exploit.</li>
+                    <li><strong>Likelihood Assessment:</strong> Estimating probability of threat-vulnerability pairing.</li>
+                    <li><strong>Risk Determination/Scoring:</strong> Combining impact and likelihood (e.g., risk matrix).</li>
+                    <li><strong>Control Analysis:</strong> Evaluating effectiveness of existing security controls.</li>
+                    <li><strong>Risk Treatment Planning:</strong> Developing strategies (mitigate, transfer, accept, avoid).</li>
+                </ul>
+                <p class="text-sm mt-3 text-gray-600">These activities form a structured approach to understanding and managing technology and product security risks.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-2xl font-semibold mb-4 text-center text-blue-ncs">Threat Modeling Methodologies</h3>
+                     <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr>
+                                    <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">Methodology</th>
+                                    <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">Core Principle</th>
+                                    <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">Focus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row-odd">
+                                    <td class="table-cell p-3 text-sm text-gray-700 font-semibold">STRIDE</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Threat categorization (Spoofing, Tampering, etc.)</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Software design flaws</td>
+                                </tr>
+                                <tr class="table-row-even">
+                                    <td class="table-cell p-3 text-sm text-gray-700 font-semibold">PASTA</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Attacker-centric, risk-based (7 stages)</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Business risk, attack simulation</td>
+                                </tr>
+                                <tr class="table-row-odd">
+                                    <td class="table-cell p-3 text-sm text-gray-700 font-semibold">VAST</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Scalable, integrated, collaborative</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Enterprise scalability, continuous modeling</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-center mt-3 text-gray-600">These methodologies help proactively identify threats during design and development, as detailed in the report.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-2xl font-semibold mb-4 text-center text-blue-ncs">Key Risk Assessment Frameworks</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr>
+                                    <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">Framework</th>
+                                    <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">Primary Focus</th>
+                                    <th class="table-header p-3 text-left text-sm font-semibold tracking-wide">Approach</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row-odd">
+                                    <td class="table-cell p-3 text-sm text-gray-700 font-semibold">NIST RMF</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Comprehensive security & privacy risk management</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Qualitative (7 steps)</td>
+                                </tr>
+                                <tr class="table-row-even">
+                                    <td class="table-cell p-3 text-sm text-gray-700 font-semibold">OCTAVE</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Operational risk, asset-centric, adaptable</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Qualitative (Allegro/FORTE)</td>
+                                </tr>
+                                <tr class="table-row-odd">
+                                    <td class="table-cell p-3 text-sm text-gray-700 font-semibold">FAIR</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Financial quantification of information risk</td>
+                                    <td class="table-cell p-3 text-sm text-gray-700">Quantitative (ALE)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-center mt-3 text-gray-600">Established frameworks provide structured approaches to risk assessment, chosen based on organizational needs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="vulnerability-management" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">Vulnerability Management</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">Effective vulnerability management involves identifying, classifying, prioritizing, and remediating vulnerabilities. Context-aware prioritization is key to focusing on the most significant threats.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-ncs">📊 CVSS & Severity Rating</h3>
+                    <p class="text-gray-700 mb-3">The Common Vulnerability Scoring System (CVSS) provides a numerical score (0-10) for severity. It considers:</p>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700 mb-4">
+                        <li><strong>Base Metrics:</strong> Intrinsic qualities (Attack Vector, Complexity, Impact).</li>
+                        <li><strong>Temporal Metrics:</strong> Changes over time (Exploit Code Maturity, Remediation Level).</li>
+                        <li><strong>Environmental Metrics:</strong> Organization-specific context.</li>
+                    </ul>
+                    <p class="text-gray-700">While CVSS is a starting point, it doesn't capture full business risk. Contextual prioritization is essential.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-2xl font-semibold mb-4 text-center text-blue-ncs">Illustrative Vulnerability Distribution</h3>
+                    <div class="chart-container h-72 md:h-80 max-w-md">
+                        <canvas id="vulnerabilityDistributionChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center mt-2 text-gray-600">This chart shows a typical, illustrative distribution of vulnerabilities by severity. Prioritization should focus on high-impact critical and high vulnerabilities first. (Illustrative Data)</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg card-shadow mt-8">
+                <h3 class="text-2xl font-semibold mb-3 text-blue-ncs">🎯 Effective Prioritization Strategies</h3>
+                <p class="text-gray-700 mb-3">Move beyond CVSS scores alone. Consider:</p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li><strong>Severity (CVSS):</strong> Initial indicator.</li>
+                    <li><strong>Exploitability:</strong> Ease of exploitation, public exploits available.</li>
+                    <li><strong>Business Impact:</strong> Criticality of affected asset, data sensitivity, operational/financial/reputational damage.</li>
+                    <li><strong>Context-Awareness:</strong> System exposure (internet-facing vs. internal), existing compensating controls, business function.</li>
+                </ul>
+                <p class="text-sm mt-3 text-gray-600">True risk-based prioritization correlates vulnerability data with asset inventories, business context, and threat intelligence.</p>
+            </div>
+        </section>
+
+        <section id="modern-challenges" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">Modern Security Challenges</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">New architectures and development paradigms bring unique security considerations that require adapted testing and assessment methodologies.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-xl font-semibold text-coral-red mb-2">☁️ Cloud-Native & Kubernetes</h3>
+                    <p class="text-sm text-gray-600 mb-2">Risks include insecure configurations (cloud, container, IaC), injection flaws, improper auth/authz, CI/CD flaws, insecure secrets.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-xl font-semibold text-sunglow-yellow mb-2">⚡ Serverless</h3>
+                    <p class="text-sm text-gray-600 mb-2">Challenges: Event injection, over-privileged functions, insecure dependencies, secrets management, insufficient logging.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-xl font-semibold text-caribbean-green mb-2">📱 IoT Products</h3>
+                    <p class="text-sm text-gray-600 mb-2">OWASP IoT Top 10 includes weak passwords, insecure network services, lack of secure updates, insecure defaults.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg card-shadow">
+                <h3 class="text-2xl font-semibold mb-3 text-blue-ncs">⛓️ Mitigating Software Supply Chain Risks</h3>
+                <p class="text-gray-700 mb-3">Attacks compromising software components or dev infrastructure are rising. Key mitigation strategies include:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <strong class="text-midnight-green">Software Bill of Materials (SBOM):</strong>
+                        <p class="text-sm text-gray-700">List all software components (first/third-party, open-source). Machine-readable format.</p>
+                    </div>
+                    <div>
+                        <strong class="text-midnight-green">SLSA (Supply-chain Levels for Software Artifacts):</strong>
+                        <p class="text-sm text-gray-700 mb-1">Framework to protect from tampering and ensure artifact integrity. Levels 1-4 define assurance.</p>
+                        <ul class="list-decimal list-inside text-xs text-gray-600 pl-4">
+                            <li>SLSA 1: Basic build process documentation.</li>
+                            <li>SLSA 2: Tamper-resistance for build service.</li>
+                            <li>SLSA 3: Stronger guarantees against specific threats.</li>
+                            <li>SLSA 4: Highest security, two-person review, hermetic reproducible build.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong class="text-midnight-green">NIST Guidance (e.g., SSDF - SP 800-218):</strong>
+                        <p class="text-sm text-gray-700">Practices for secure software development throughout SDLC.</p>
+                    </div>
+                     <div>
+                        <strong class="text-midnight-green">Managing Open Source Software (OSS):</strong>
+                        <p class="text-sm text-gray-700">Scan for vulnerabilities, select well-maintained projects, secure downloads, monitor CVEs, update dependencies.</p>
+                    </div>
+                </div>
+                <p class="text-sm mt-4 text-gray-600">These practices help reduce exposure to software supply chain attacks, as emphasized in the report.</p>
+            </div>
+        </section>
+
+        <section id="secure-culture" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">Fostering a Secure Culture</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">DevSecOps integrates security into every phase of DevOps, making security a shared responsibility. This cultural shift is vital for robust application security.</p>
+            
+            <div class="bg-white p-6 rounded-lg card-shadow">
+                <h3 class="text-2xl font-semibold mb-4 text-blue-ncs">Key DevSecOps Principles & Practices 🤝</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-coral-red">🔄</span>
+                        <div><strong>Continuous Integration/Deployment (CI/CD) with Embedded Security:</strong> Automate SAST, DAST, SCA, config scans in pipelines.</div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-sunglow-yellow">⬅️</span>
+                        <div><strong>Proactive Security ("Shift Left"):</strong> Integrate security from the start (planning, design).</div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-caribbean-green">💬</span>
+                        <div><strong>Collaboration & Communication:</strong> Shared responsibility among Dev, Sec, Ops teams.</div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-blue-ncs">🤖</span>
+                        <div><strong>Automation of Security Processes:</strong> Consistent, fast, reliable security tasks.</div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-coral-red">📜</span>
+                        <div><strong>Security as Code:</strong> Define policies, controls, configs as code for versioning and automation.</div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-sunglow-yellow">🚦</span>
+                        <div><strong>Compliance as Code:</strong> Integrate compliance checks into pipelines.</div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-caribbean-green">👁️</span>
+                        <div><strong>Real-Time Monitoring & Logging:</strong> Continuous oversight for security events and anomalies.</div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-2xl text-blue-ncs">🎓</span>
+                        <div><strong>Regular Security Training & Awareness:</strong> Ongoing education for all team members.</div>
+                    </div>
+                </div>
+                <p class="text-sm mt-4 text-gray-600">The report highlights that DevSecOps is more than tools; it's a cultural transformation where security is intrinsic to development and operations.</p>
+            </div>
+        </section>
+        
+        <section id="future-ai-ml" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">The Future: AI/ML in AST</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">Artificial Intelligence (AI) and Machine Learning (ML) are significantly enhancing SAST and DAST capabilities, moving beyond traditional detection towards active assistance in remediation.</p>
+            <div class="bg-white p-6 rounded-lg card-shadow">
+                <h3 class="text-2xl font-semibold mb-3 text-blue-ncs">AI/ML Enhancements 🚀</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li><strong>Pattern Recognition for Unknown Vulnerabilities:</strong> ML models identify novel or zero-day threats not matching predefined rules.</li>
+                    <li><strong>Improved Accuracy & Reduced False Positives:</strong> AI analyzes code context and runtime behavior with more nuance, distinguishing real threats.</li>
+                    <li><strong>Context-Aware Prioritization:</strong> Algorithms assess vulnerabilities based on technical severity, exploitability, and business impact.</li>
+                    <li><strong>AI-Generated Code Fixes:</strong> Tools use AI (often LLMs) to analyze vulnerable code and suggest patches or secure alternatives.</li>
+                    <li><strong>Developer Training & Learning:</strong> AI-powered suggestions act as contextual learning tools for secure coding.</li>
+                </ul>
+                <p class="text-sm mt-3 text-gray-600">While promising, challenges include quality training data and AI model security. The evolution points to AI as an active assistant in reducing MTTR.</p>
+            </div>
+        </section>
+
+        <section id="conclusion" class="my-12 md:my-16 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-2 section-title-underline">Strategic Outlook & Recommendations</h2>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">The application security landscape requires a multi-layered, integrated, and risk-based approach. Continuous evolution and adaptation are key to maintaining a robust security posture.</p>
+            <div class="bg-midnight-green text-white p-8 rounded-lg card-shadow">
+                <h3 class="text-2xl font-semibold mb-4 text-center text-white">Key Strategic Imperatives:</h3>
+                <ul class="list-decimal list-inside space-y-3 text-gray-300">
+                    <li>Embrace a multi-layered, integrated testing strategy (SAST, DAST, IAST).</li>
+                    <li>Prioritize risk-based vulnerability management with business context.</li>
+                    <li>Continuously mature risk assessment practices (NIST, OCTAVE, FAIR).</li>
+                    <li>Invest in automation and CI/CD integration ("shift-left").</li>
+                    <li>Address modern architectural challenges (Cloud, IoT, Supply Chain).</li>
+                    <li>Foster a strong DevSecOps culture and effective communication.</li>
+                    <li>Monitor and adapt to evolving technologies like AI/ML in AST.</li>
+                </ul>
+                <p class="text-center mt-6 text-lg font-semibold text-caribbean-green">By adopting these imperatives, organizations can significantly enhance their ability to develop secure products and navigate the cybersecurity landscape with resilience.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-midnight-green text-gray-300 py-8 text-center">
+        <p class="text-sm">&copy; 2024 AppSec Insights Infographic. Synthesized from "An In-Depth Analysis of Application Security Testing and Technology Risk Assessment."</p>
+        <p class="text-xs mt-1">Illustrative data used for some charts to represent concepts from the report.</p>
+    </footer>
+
+    <script>
+        // Chart.js Label Wrapping Function
+        function wrapText(text, maxWidthChars = 16) {
+            if (typeof text !== 'string' || text.length <= maxWidthChars) {
+                return text;
+            }
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidthChars && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        // Shared Tooltip Configuration
+        const sharedTooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+        
+        const sharedChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#073B4C' // Midnight Green
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: sharedTooltipTitleCallback
+                    },
+                    backgroundColor: 'rgba(7, 59, 76, 0.9)', // Darker, semi-transparent
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    borderColor: '#118AB2',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#073B4C' },
+                    grid: { color: '#E2E8F0' }
+                },
+                x: {
+                    ticks: { color: '#073B4C' },
+                    grid: { color: '#E2E8F0' }
+                }
+            }
+        };
+
+        // Cost of Bugs Chart
+        const costOfBugsCtx = document.getElementById('costOfBugsChart').getContext('2d');
+        new Chart(costOfBugsCtx, {
+            type: 'bar',
+            data: {
+                labels: [wrapText('Design/Dev'), wrapText('Build/CI'), wrapText('Test/QA'), wrapText('Staging/CD'), wrapText('Production')],
+                datasets: [{
+                    label: 'Relative Cost to Fix (Illustrative)',
+                    data: [1, 5, 15, 30, 100], // Illustrative data
+                    backgroundColor: ['#06D6A0', '#FFD166', '#FF6B6B', '#118AB2', '#073B4C'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 1
+                }]
+            },
+            options: { ...sharedChartOptions }
+        });
+
+        // False Positive Chart
+        const falsePositiveCtx = document.getElementById('falsePositiveChart').getContext('2d');
+        new Chart(falsePositiveCtx, {
+            type: 'bar',
+            data: {
+                labels: [wrapText('SAST'), wrapText('DAST'), wrapText('IAST')],
+                datasets: [{
+                    label: 'Relative False Positive Rate (Illustrative)',
+                    data: [70, 25, 10], // Illustrative data: SAST high, DAST medium-low, IAST low
+                    backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 1
+                }]
+            },
+            options: { ...sharedChartOptions }
+        });
+        
+        // Vulnerability Distribution Chart
+        const vulnerabilityDistributionCtx = document.getElementById('vulnerabilityDistributionChart').getContext('2d');
+        new Chart(vulnerabilityDistributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [wrapText('Critical'), wrapText('High'), wrapText('Medium'), wrapText('Low')],
+                datasets: [{
+                    label: 'Vulnerability Distribution (Illustrative)',
+                    data: [5, 20, 50, 25], // Illustrative percentages
+                    backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { 
+                        position: 'top',
+                        labels: { color: '#073B4C' }
+                    },
+                    tooltip: { // Doughnut charts use a different tooltip structure slightly
+                         callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        },
+                        backgroundColor: 'rgba(7, 59, 76, 0.9)',
+                        titleColor: '#FFFFFF',
+                        bodyColor: '#FFFFFF',
+                        borderColor: '#118AB2',
+                        borderWidth: 1
+                    }
+                }
+            }
+        });
+
+        // Sticky Nav Scroll Highlighting & Mobile Toggle
+        const navToggle = document.getElementById('nav-toggle');
+        const navContent = document.getElementById('nav-content');
+        navToggle.addEventListener('click', function() {
+            navContent.classList.toggle('hidden');
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('#navbar ul li a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 80) { // 80px offset for sticky nav height
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Close mobile nav on link click
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) { // md breakpoint
+                    navContent.classList.add('hidden');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
